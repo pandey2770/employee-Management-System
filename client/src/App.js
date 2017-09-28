@@ -22,6 +22,10 @@ class App extends Component {
     });
   }
 
+  deleteEmployee =(event)=>{
+    const { id }= event.target.dataset;    
+     axios.delete(`/api/employee/${id}`)
+  };
 
   render() {
     const { userData } = this.state;    
@@ -33,6 +37,7 @@ class App extends Component {
             <div>
               <span>{user.name}</span>
               <span>{user.department}</span>
+              <input type='button' value='x'data-id={user.id} onClick={this.deleteEmployee}/>
             </div>
           </div>
         ))}
