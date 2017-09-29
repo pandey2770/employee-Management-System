@@ -11,6 +11,7 @@ app.get("/api/employee", async function(req, res) {
 });
 
 app.post('/api/employee', async (req, res) => {
+  console.log(req.body.employee)
   await employee.createEmployee(req.body.employee);
   res.json(req.body);
 });

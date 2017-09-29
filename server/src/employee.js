@@ -1,3 +1,4 @@
+const uuidv1 = require("uuid/v1");
 const DB = require("./db");
 
 async function getAllemployee() {
@@ -6,9 +7,10 @@ async function getAllemployee() {
 }
 
 async function createEmployee({ name, department, id}) {
+  const idnew = uuidv1();  
   const query = {
-    text: "INSERT INTO employee VALUES($1, $2,$3 )",
-    values:  [name, department, id],
+    text: "INSERT INTO employee VALUES($1, $2, $3 )",
+    values:  [name, department, idnew],
   };
   return await DB.mutate(query);
 }
