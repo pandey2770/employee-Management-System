@@ -126,6 +126,9 @@ const ListEmployee = ({ empData, updateEmployee,
           <Emp emp={emp} updateEmployee={updateEmployee} deleteEmployee={deleteEmployee} />
         </div>
       ))}
+      <div>
+        Total Employee {empData.length}
+      </div>
     </div>
   )
 }
@@ -149,6 +152,7 @@ class Employee extends Component {
         that.setState({
           userData: data
         });
+        console.log(data.length)
     }); 
   }
 
