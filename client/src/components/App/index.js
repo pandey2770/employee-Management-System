@@ -4,13 +4,13 @@ import Home from '../Home';
 import Detail from '../Detail';
 import './styles.css';
 
-const App = () => 
-  <div className='center'>
+const App = () =>
+  <div className="center">
     <h1>Employee Management System</h1>
     <Switch>
       <Route path="/emp" component={Detail} />
       <Route path="/" component={Home} />
     </Switch>
-  </div>
+  </div>;
 
 export default App;
