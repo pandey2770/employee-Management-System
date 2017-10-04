@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
 import axios from 'axios';
+import { Switch, Route } from 'react-router-dom';
+import './styles.css';
 
 class CreateEmployee extends Component {
   state = {
@@ -250,7 +251,6 @@ class Employee extends Component {
       if (departmentA === departmentB) {
         return 0;
       }
-      console.log('order', order)
       let value;
       if (departmentA < departmentB) {
         value =  -1 
@@ -280,7 +280,6 @@ class Employee extends Component {
       if (nameA === nameB) {
         return 0;
       }
-      console.log('order', order)
       let value;
       if (nameA < nameB) {
         value =  -1 
@@ -303,7 +302,6 @@ class Employee extends Component {
     const { userData } = this.state;  
     return (
       <div className='center'>
-        <h1>Employee Management System</h1>
         <CreateEmployee createEmployee={this.createEmployee} />
         <ListEmployee
           empData={userData}
