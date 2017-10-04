@@ -5,7 +5,8 @@ import axios from 'axios';
 class CreateEmployee extends Component {
   state = {
     name: '',
-    department: ''
+    department: '',
+    month: '',
   }
 
   updateValue = (event) => {
@@ -15,16 +16,17 @@ class CreateEmployee extends Component {
   }
 
   createEmployee = () => {
-    const { name, department } = this.state;
-    this.props.createEmployee(name, department);
+    const { name, department, month } = this.state;
+    this.props.createEmployee(name, department, month);
   }
 
   render() {
-    const { name, department } = this.state;
+    const { name, department, month } = this.state;
     return (
       <div>
         <input type='text' placeholder='Name' name="name" value={name} onChange={this.updateValue}/>
         <input type='text' placeholder='department' name="department" value={department} onChange={this.updateValue}/>
+        <input type='text' placeholder='month' name="month" value={month} onChange={this.updateValue}/>
         <input type='button' value="Save" onClick={this.createEmployee}/>
       </div>
     )
@@ -39,7 +41,8 @@ class Emp extends Component {
     this.state = {
       editing: false,
       name: props.emp.name,
-      department: props.emp.department
+      department: props.emp.department,
+      month: props.emp.month,
     }
   }
 
@@ -63,19 +66,20 @@ class Emp extends Component {
 
   updateEmployee = () => {
     const { updateEmployee, emp } = this.props;
-    const { name, department } = this.state;
-    updateEmployee(emp.id, name, department);
+    const { name, department, month } = this.state;
+    updateEmployee(emp.id, name, department, month);
     this.toggleEditEmployee();
   }
  
   render() {
     const { editing } = this.state;
     if (editing) {
-      const { name, department } = this.state;
+      const { name, department, month } = this.state;
       return (
         <div>
           <input type='text' placeholder='Name' name="name" value={name} onChange={this.updateValue}/>
           <input type='text' placeholder='department' name="department" value={department} onChange={this.updateValue}/>
+          <input type='text' placeholder='month' name="month" value={month} onChange={this.updateValue}/>
           <input type='button' value="Save" onClick={this.updateEmployee}/>
           <input type='button' value="Cancel" onClick={this.toggleEditEmployee}/>
         </div>
@@ -92,6 +96,9 @@ class Emp extends Component {
             <td>
             {emp.department}
             </td>
+            <td>
+            {emp.month}
+            </td>
           </tr>
         </table>
         <input type='button' value='Edit' onClick={this.toggleEditEmployee}/>
@@ -101,10 +108,7 @@ class Emp extends Component {
   }
 }
 
-const ListEmployee = ({ empData, updateEmployee,
-                      deleteEmployee, sortEmployee, 
-                      sortDepartment,filterEmployee, 
-                      filterDepartment }) => {
+const ListEmployee = ({ empData, updateEmployee,deleteEmployee, sortEmployee,sortDepartment,filterEmployee,filterDepartment,sortMonth,filterMonth }) => {
   return (
     <div>
       <table>
@@ -112,12 +116,17 @@ const ListEmployee = ({ empData, updateEmployee,
           <th>
             Name     
             <input name="name" type='button' onClick={sortEmployee}/><br/>
-            <input type='text' onChange={filterEmployee} />
+            <input type='text' placeholder='Filter' onChange={filterEmployee} />
           </th>
           <th>
             Department
             <input name="department" type='button' onClick={sortDepartment}/><br/>
-            <input type='text' onChange={filterDepartment} />
+            <input type='text'  placeholder='Filter' onChange={filterDepartment} />
+          </th>
+          <th>
+            Month
+            <input name="month" type='button' onClick={sortMonth}/><br/>
+            <input type='text'  placeholder='Filter' onChange={filterMonth}/>
           </th>
         </tr>
       </table>
@@ -152,7 +161,6 @@ class Employee extends Component {
         that.setState({
           userData: data
         });
-        console.log(data.length)
     }); 
   }
 
@@ -166,17 +174,17 @@ class Employee extends Component {
     });
   };
 
-  createEmployee = (name, department) => {
+  createEmployee = (name, department, month) => {
     axios.post(
       '/api/employee',
-      {employee: {name, department}}
+      {employee: {name, department, month}}
     );
   };
 
-  updateEmployee = (id, name, department) => {
+  updateEmployee = (id, name, department, month) => {
     axios.put(
       `/api/employee/${id}`,
-      {employee: {name, department, id}}
+      {employee: {name, department, id, month}}
     );
   }
   filterEmployee = (event) => {
@@ -193,7 +201,43 @@ class Employee extends Component {
       userData
     });
   }
-  
+  filterMonth =(event) => {
+    console.log('asda')
+    const { value } = event.target;
+    const userData = this.backupData.filter(emp => emp.month.indexOf(value) >= 0);
+    this.setState({
+      userData
+    });
+  }
+  sortMonth=(event) => {
+    const { userData, sortField, sortOrder } = this.state; 
+    const { month: field } = event.target;
+    let order = 'asc';
+    if(field === sortField){
+      order = sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+    userData.sort(function(a, b){
+      var monthA=a.month.toLowerCase(), monthB=b.month.toLowerCase();
+      if (monthA === monthB) {
+        return 0;
+      }
+      let value;
+      if (monthA < monthB) {
+        value =  -1 
+      } else {
+      value = 1
+      }
+      if (order === 'desc') {
+        value *= -1;
+      }
+      return value
+    })
+    this.setState({
+      userData,
+      sortField: field,
+      sortOrder: order,
+    })
+  }
   sortDepartment = (event) => {
     const { userData, sortField, sortOrder } = this.state; 
     const { department: field } = event.target;
@@ -269,6 +313,8 @@ class Employee extends Component {
           sortDepartment ={this.sortDepartment}
           filterEmployee ={this.filterEmployee}
           filterDepartment={this.filterDepartment}
+          sortMonth={this.sortMonth}
+          filterMonth={this.filterMonth}
         />
       </div>
     );

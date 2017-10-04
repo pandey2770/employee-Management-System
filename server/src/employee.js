@@ -6,11 +6,11 @@ async function getAllemployee() {
   return employee;
 }
 
-async function createEmployee({ name, department, id}) {
+async function createEmployee({ name, department, id, month}) {
   const idnew = uuidv1();  
   const query = {
-    text: "INSERT INTO employee VALUES($1, $2, $3 )",
-    values:  [name, department, idnew],
+    text: "INSERT INTO employee VALUES($1, $2, $3, $4 )",
+    values:  [name, department, idnew, month],
   };
   return await DB.mutate(query);
 }
@@ -23,10 +23,10 @@ async function deleteEmployee(id) {
   return await DB.mutate(query);
 }
 
-async function updateEmployee(id, { name, department}) {
+async function updateEmployee(id, { name, department, month}) {
   const query = {
     text: "UPDATE employee SET name = $1, department = $2 WHERE id = $3",
-    values: [name, department, id],
+    values: [name, department, month, id],
   };
   return await DB.mutate(query);
 }
