@@ -171,19 +171,27 @@ class Employee extends Component {
 
   sortEmployee = (event) => {
     const { userData, sortField, sortOrder } = this.state; 
-    const { field } = event.target;
+    const { name: field } = event.target;
     let order = 'asc';
     if(field === sortField){
-      order = 'desc';
+      order = sortOrder === 'asc' ? 'desc' : 'asc';
     }
     userData.sort(function(a, b){
       var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase();
       if (nameA === nameB) {
         return 0;
       }
-      if (nameA < nameB && order === 'asc') 
-        return -1 
-      return 1
+      console.log('order', order)
+      let value;
+      if (nameA < nameB) {
+        value =  -1 
+      } else {
+      value = 1
+      }
+      if (order === 'desc') {
+        value *= -1;
+      }
+      return value
     })
     this.setState({
       userData,
