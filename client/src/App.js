@@ -101,18 +101,23 @@ class Emp extends Component {
   }
 }
 
-const ListEmployee = ({ empData, updateEmployee, deleteEmployee, sortEmployee, sortDepartment }) => {
+const ListEmployee = ({ empData, updateEmployee,
+                      deleteEmployee, sortEmployee, 
+                      sortDepartment,filterEmployee, 
+                      filterDepartment }) => {
   return (
     <div>
       <table>
         <tr>
           <th>
             Name     
-            <input name="name" type='button' onClick={sortEmployee}/>     
+            <input name="name" type='button' onClick={sortEmployee}/><br/>
+            <input type='text' onChange={filterEmployee} />
           </th>
           <th>
             Department
-            <input name="department" type='button' onClick={sortDepartment}/>    
+            <input name="department" type='button' onClick={sortDepartment}/><br/>
+            <input type='text' onChange={filterDepartment} />
           </th>
         </tr>
       </table>
@@ -140,6 +145,7 @@ class Employee extends Component {
     const that = this;
     axios.get(`api/employee`)
       .then(({ data }) => {
+        this.backupData = data;
         that.setState({
           userData: data
         });
@@ -169,6 +175,21 @@ class Employee extends Component {
       {employee: {name, department, id}}
     );
   }
+  filterEmployee = (event) => {
+    const { value } = event.target;
+    const userData = this.backupData.filter(emp => emp.name.indexOf(value) >= 0);
+    this.setState({
+      userData
+    });
+  }
+  filterDepartment =(event) => {
+    const { value } = event.target;
+    const userData = this.backupData.filter(emp => emp.department.indexOf(value) >= 0);
+    this.setState({
+      userData
+    });
+  }
+  
   sortDepartment = (event) => {
     const { userData, sortField, sortOrder } = this.state; 
     const { department: field } = event.target;
@@ -242,6 +263,8 @@ class Employee extends Component {
           deleteEmployee={this.deleteEmployee}
           sortEmployee={this.sortEmployee}
           sortDepartment ={this.sortDepartment}
+          filterEmployee ={this.filterEmployee}
+          filterDepartment={this.filterDepartment}
         />
       </div>
     );
