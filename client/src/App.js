@@ -101,7 +101,7 @@ class Emp extends Component {
   }
 }
 
-const ListEmployee = ({ empData, updateEmployee, deleteEmployee, sortEmployee }) => {
+const ListEmployee = ({ empData, updateEmployee, deleteEmployee, sortEmployee, sortDepartment }) => {
   return (
     <div>
       <table>
@@ -112,6 +112,7 @@ const ListEmployee = ({ empData, updateEmployee, deleteEmployee, sortEmployee })
           </th>
           <th>
             Department
+            <input name="department" type='button' onClick={sortDepartment}/>    
           </th>
         </tr>
       </table>
@@ -168,7 +169,36 @@ class Employee extends Component {
       {employee: {name, department, id}}
     );
   }
-
+  sortDepartment = (event) => {
+    const { userData, sortField, sortOrder } = this.state; 
+    const { department: field } = event.target;
+    let order = 'asc';
+    if(field === sortField){
+      order = sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+    userData.sort(function(a, b){
+      var departmentA=a.department.toLowerCase(), departmentB=b.department.toLowerCase();
+      if (departmentA === departmentB) {
+        return 0;
+      }
+      console.log('order', order)
+      let value;
+      if (departmentA < departmentB) {
+        value =  -1 
+      } else {
+      value = 1
+      }
+      if (order === 'desc') {
+        value *= -1;
+      }
+      return value
+    })
+    this.setState({
+      userData,
+      sortField: field,
+      sortOrder: order,
+    })
+  }
   sortEmployee = (event) => {
     const { userData, sortField, sortOrder } = this.state; 
     const { name: field } = event.target;
@@ -211,6 +241,7 @@ class Employee extends Component {
           updateEmployee={this.updateEmployee}
           deleteEmployee={this.deleteEmployee}
           sortEmployee={this.sortEmployee}
+          sortDepartment ={this.sortDepartment}
         />
       </div>
     );
