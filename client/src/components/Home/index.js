@@ -166,19 +166,39 @@ class ListEmployees extends Component {
 
   sortEmployee = event => {
     const { empData, sortField, sortOrder } = this.state;
-    const {  field } = event.target;
+    const { name: field } = event.target;    
     let order = 'asc';
     if (field === sortField) {
       order = sortOrder === 'asc' ? 'desc' : 'asc';
-    }
+    }    
+    empData.sort(function(a, b) {
+      var fieldA = a[field].toLowerCase(),
+      fieldB = b[field].toLowerCase();
+      if (fieldA === fieldB) {
+        return 0;
+      }
+      let value;
+      if (fieldA < fieldB) {
+        value = -1;
+      } else {
+        value = 1;
+      }
+      if (order === 'desc') {
+        value *= -1;
+      }
+      return value;
+    }); 
+    this.setState({
+      empData,
+      sortField: field,
+      sortOrder: order
+    });
   };
 
   filterEmployee = event => {
-    const { value } = event.target;
+    const { value, name } = event.target;
     const empData = this.props.employees.filter(
-      emp => emp.name.indexOf(value) >= 0,
-      emp => emp.department.indexOf(value) >= 0,
-      emp => emp.month.indexOf(value) >= 0          
+      emp => emp[name].indexOf(value) >= 0         
     );
     this.setState({
       empData
@@ -195,7 +215,7 @@ class ListEmployees extends Component {
             Name
             <input name="name" type="button" onClick={this.sortEmployee} />
             <br />
-            <input type="text" placeholder="Filter" onChange={this.filterEmployee} />
+            <input name="name" type="text" placeholder="Filter" onChange={this.filterEmployee} />
           </th>
           <th>
             Department
@@ -203,6 +223,7 @@ class ListEmployees extends Component {
             <br />
             <input
               type="text"
+              name="department"
               placeholder="Filter"
               onChange={this.filterEmployee}
             />
@@ -211,7 +232,7 @@ class ListEmployees extends Component {
             Month
             <input name="month" type="button" onClick={this.sortEmployee} />
             <br />
-            <input type="text" placeholder="Filter" onChange={this.filterEmployee} />
+            <input name="month" type="text" placeholder="Filter" onChange={this.filterEmployee} />
           </th>
         </tr>
       </table>
