@@ -1,6 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {Container} from 'flux/utils';
+import AppStore from '../../store';
 import './styles.css';
 
-const Detail = () => <div className="center">Details page</div>;
+const Detail = ({ employees }) => <div className="center">
+  <h1>Details page</h1>
+  {employees && employees.map(emp => <span key={emp.id}>{emp.name}</span>)}
+</div>;
 
-export default Detail;
+function getStores() {
+  return [
+    AppStore
+  ];
+}
+
+function getState() {
+  return {
+    employees: AppStore.getState(),
+  };
+}
+
+export default Container.createFunctional(Detail, getStores, getState);
