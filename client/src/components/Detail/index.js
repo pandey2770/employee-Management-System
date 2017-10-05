@@ -1,12 +1,116 @@
-import React from 'react';
+import React, { Component} from 'react';
 import {Container} from 'flux/utils';
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom';
+import { deleteEmployee, updateEmployee } from '../../actions';
 import AppStore from '../../store';
 import './styles.css';
 
-const Detail = ({ employees }) => <div className="center">
-  <h1>Details page</h1>
-  {employees && employees.map(emp => <span key={emp.id}>{emp.name}</span>)}
-</div>;
+class Detail extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      editing: false,
+    };
+  }
+  componentWillMount() {
+    const { employees, match: {params: { id }}} = this.props;
+    if (employees && id) {
+      this.setCurrentEmployee(employees, id);
+    }
+  }
+
+  deleteEmployee = () => {
+    const { id } = this.state.employee;
+    deleteEmployee(id);
+  };
+
+  componentWillReceiveProps(props) {
+    const { employees, match: {params: { id }}} = props;
+    if (props.employees && id && !this.state.employee) {
+      this.setCurrentEmployee(employees, id);
+    }
+  }
+
+  setCurrentEmployee(employees, id) {
+    const employee = employees.find(emp => emp.id === id);
+    this.setState({
+      employee
+    });
+  }
+  toggleEditEmployee = () => {
+    const { editing } = this.state;
+    this.setState({
+      editing: !editing
+    });
+  };
+
+  updateValue = event => {
+    this.setState({
+      [`${event.target.name}`]: event.target.value
+    });
+  };
+
+  updateEmployee = () => {
+    const { name, department, month } = this.state;
+    const { id } = this.state.employee;
+    updateEmployee(name, department, month, id);    
+    this.toggleEditEmployee();
+  };
+
+  render() {
+    const { employee } = this.state;
+    const { editing } = this.state;
+    if (editing) {
+      const { name, department, month } = this.state.employee;
+      return (
+        <div>
+          <input
+            type="text"
+            placeholder="Name"
+            name="name"
+            value={name}
+            onChange={this.updateValue}
+          />
+          <input
+            type="text"
+            placeholder="department"
+            name="department"
+            value={department}
+            onChange={this.updateValue}
+          />
+          <input
+            type="text"
+            placeholder="month"
+            name="month"
+            value={month}
+            onChange={this.updateValue}
+          />
+          <input type="button" value="Save" onClick={this.updateEmployee} />
+          <input
+            type="button"
+            value="Cancel"
+            onClick={this.toggleEditEmployee}
+          />
+        </div>
+      );
+    }
+    return (
+      <div>
+        <div className="center">
+          <h1>Details page</h1>
+          {employee && employee.name}
+          {employee && employee.department}
+          {employee && employee.month}
+        </div>
+        <Link to={`/emp`}>
+        <input type='button' value='delete' onClick={this.deleteEmployee} /></Link>
+        <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
+      </div>  
+    );
+  }
+}
 
 function getStores() {
   return [
@@ -20,4 +124,4 @@ function getState() {
   };
 }
 
-export default Container.createFunctional(Detail, getStores, getState);
+export default  Container.createFunctional(withRouter(Detail), getStores, getState);

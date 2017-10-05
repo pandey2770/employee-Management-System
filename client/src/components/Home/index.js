@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import {Container} from 'flux/utils';
 import { createEmployee, deleteEmployee, updateEmployee } from '../../actions';
 import AppStore from '../../store';
@@ -81,7 +81,6 @@ class Emp extends Component {
 
   deleteEmployee = () => {
     const { id } = this.props.emp;
-    console.log(this.props.emp,'asdada')
     deleteEmployee(id);
   };
 
@@ -132,7 +131,7 @@ class Emp extends Component {
     return (
       <tr>
         <td>
-          {emp.name}
+        <Link to={`/emp/${emp.id}`}>{emp.name} </Link>
         </td>
         <td>
           {emp.department}
@@ -148,11 +147,15 @@ class Emp extends Component {
 }
 
 class ListEmployees extends Component {
-  state = {
-    name: '',
-    department: '',
-    month: ''
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: '',
+      department: '',
+      month: '',
+      empData: props.employees
+    };
+  }
 
   componentWillReceiveProps(props) {
     this.setState({

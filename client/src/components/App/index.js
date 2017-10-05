@@ -15,7 +15,7 @@ class App extends Component {
       <div className="center">
         <h1>Employee Management System</h1>
         <Switch>
-          <Route path="/emp" component={Detail} />
+          <Route path="/emp/:id" component={Detail} />
           <Route path="/" component={Home} />
         </Switch>
     </div>);
