@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Container} from 'flux/utils';
+import { createEmployee, deleteEmployee, updateEmployee } from '../../actions';
 import AppStore from '../../store';
 import './styles.css';
 
@@ -11,7 +12,7 @@ class CreateEmployee extends Component {
     month: ''
   };
 
-  updateValue = event => {
+  updateValue = event => {   
     this.setState({
       [`${event.target.name}`]: event.target.value
     });
@@ -19,7 +20,7 @@ class CreateEmployee extends Component {
 
   createEmployee = () => {
     const { name, department, month } = this.state;
-    this.props.createEmployee(name, department, month);
+    createEmployee(name, department, month);
   };
 
   render() {
@@ -79,14 +80,15 @@ class Emp extends Component {
   };
 
   deleteEmployee = () => {
-    const { deleteEmployee, emp: { id } } = this.props;
+    const { id } = this.props.emp;
+    console.log(this.props.emp,'asdada')
     deleteEmployee(id);
   };
 
   updateEmployee = () => {
-    const { updateEmployee, emp } = this.props;
     const { name, department, month } = this.state;
-    updateEmployee(emp.id, name, department, month);
+    const { id } = this.props.emp;
+    updateEmployee(name, department, month, id);
     this.toggleEditEmployee();
   };
 
@@ -149,243 +151,92 @@ class Emp extends Component {
   }
 }
 
-const ListEmployee = ({
-  empData,
-  updateEmployee,
-  deleteEmployee,
-  sortEmployee,
-  sortDepartment,
-  filterEmployee,
-  filterDepartment,
-  sortMonth,
-  filterMonth
-}) => {
+class ListEmployees extends Component {
+  state = {
+    name: '',
+    department: '',
+    month: ''
+  };
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      empData: props.employees
+    });
+  }
+
+  sortEmployee = event => {
+    const { empData, sortField, sortOrder } = this.state;
+    const {  field } = event.target;
+    let order = 'asc';
+    if (field === sortField) {
+      order = sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+  };
+
+  filterEmployee = event => {
+    const { value } = event.target;
+    const empData = this.props.employees.filter(
+      emp => emp.name.indexOf(value) >= 0,
+      emp => emp.department.indexOf(value) >= 0,
+      emp => emp.month.indexOf(value) >= 0          
+    );
+    this.setState({
+      empData
+    });
+  };
+
+  render() {
+    const { empData } = this.state;   
   return (
     <div>
       <table>
         <tr>
           <th>
             Name
-            <input name="name" type="button" onClick={sortEmployee} />
+            <input name="name" type="button" onClick={this.sortEmployee} />
             <br />
-            <input type="text" placeholder="Filter" onChange={filterEmployee} />
+            <input type="text" placeholder="Filter" onChange={this.filterEmployee} />
           </th>
           <th>
             Department
-            <input name="department" type="button" onClick={sortDepartment} />
+            <input name="department" type="button" onClick={this.sortEmployee} />
             <br />
             <input
               type="text"
               placeholder="Filter"
-              onChange={filterDepartment}
+              onChange={this.filterEmployee}
             />
           </th>
           <th>
             Month
-            <input name="month" type="button" onClick={sortMonth} />
+            <input name="month" type="button" onClick={this.sortEmployee} />
             <br />
-            <input type="text" placeholder="Filter" onChange={filterMonth} />
+            <input type="text" placeholder="Filter" onChange={this.filterEmployee} />
           </th>
         </tr>
       </table>
-      {empData.map(emp =>
+      {empData && empData.map(emp =>
         <div key={emp.id}>
           <Emp
             emp={emp}
-            updateEmployee={updateEmployee}
-            deleteEmployee={deleteEmployee}
+            updateEmployee={this.props.updateEmployee}
+            deleteEmployee={this.props.deleteEmployee}
           />
         </div>
       )}
       <div>
-        Total Employee {empData.length}
+        Total Employee {empData && empData.length}
       </div>
     </div>
   );
 };
-
-// class Employee extends Component {
-//   // state = {
-//   //   userData: [],
-//   //   sortField: undefined,
-//   //   sortOrder: 'none'
-//   // };
-
-//   componentWillMount() {
-//     this.listEmployees();
-//   }
-
-//   componentWillReceiveProps = (props) => {
-//     this.setState({
-//       userData: props.employees
-//     });
-//   };
-
-//   deleteEmployee = id => {
-//     axios.delete(`/api/employee/${id}`);
-//     const { userData } = this.state;
-//     const deletedEmpIndex = userData.findIndex(emp => emp.id === id);
-//     userData.splice(deletedEmpIndex, 1);
-//     this.setState({
-//       userData
-//     });
-//   };
-
-//   createEmployee = (name, department, month) => {
-//     axios.post('/api/employee', { employee: { name, department, month } });
-//   };
-
-//   updateEmployee = (id, name, department, month) => {
-//     axios.put(`/api/employee/${id}`, {
-//       employee: { name, department, id, month }
-//     });
-//   };
-//   filterEmployee = event => {
-//     const { value } = event.target;
-//     const userData = this.props.employees.filter(
-//       emp => emp.name.indexOf(value) >= 0
-//     );
-//     this.setState({
-//       userData
-//     });
-//   };
-//   filterDepartment = event => {
-//     const { value } = event.target;
-//     const userData = this.props.employees.filter(
-//       emp => emp.department.indexOf(value) >= 0
-//     );
-//     this.setState({
-//       userData
-//     });
-//   };
-//   filterMonth = event => {
-//     const { value } = event.target;
-//     const userData = this.props.employees.filter(
-//       emp => emp.month.indexOf(value) >= 0
-//     );
-//     this.setState({
-//       userData
-//     });
-//   };
-//   sortMonth = event => {
-//     const { userData, sortField, sortOrder } = this.state;
-//     const { month: field } = event.target;
-//     let order = 'asc';
-//     if (field === sortField) {
-//       order = sortOrder === 'asc' ? 'desc' : 'asc';
-//     }
-//     userData.sort(function(a, b) {
-//       var monthA = a.month.toLowerCase(),
-//         monthB = b.month.toLowerCase();
-//       if (monthA === monthB) {
-//         return 0;
-//       }
-//       let value;
-//       if (monthA < monthB) {
-//         value = -1;
-//       } else {
-//         value = 1;
-//       }
-//       if (order === 'desc') {
-//         value *= -1;
-//       }
-//       return value;
-//     });
-//     this.setState({
-//       userData,
-//       sortField: field,
-//       sortOrder: order
-//     });
-//   };
-//   sortDepartment = event => {
-//     const { userData, sortField, sortOrder } = this.state;
-//     const { department: field } = event.target;
-//     let order = 'asc';
-//     if (field === sortField) {
-//       order = sortOrder === 'asc' ? 'desc' : 'asc';
-//     }
-//     userData.sort(function(a, b) {
-//       var departmentA = a.department.toLowerCase(),
-//         departmentB = b.department.toLowerCase();
-//       if (departmentA === departmentB) {
-//         return 0;
-//       }
-//       let value;
-//       if (departmentA < departmentB) {
-//         value = -1;
-//       } else {
-//         value = 1;
-//       }
-//       if (order === 'desc') {
-//         value *= -1;
-//       }
-//       return value;
-//     });
-//     this.setState({
-//       userData,
-//       sortField: field,
-//       sortOrder: order
-//     });
-//   };
-//   sortEmployee = event => {
-//     const { userData, sortField, sortOrder } = this.state;
-//     const { name: field } = event.target;
-//     let order = 'asc';
-//     if (field === sortField) {
-//       order = sortOrder === 'asc' ? 'desc' : 'asc';
-//     }
-//     userData.sort(function(a, b) {
-//       var nameA = a.name.toLowerCase(),
-//         nameB = b.name.toLowerCase();
-//       if (nameA === nameB) {
-//         return 0;
-//       }
-//       let value;
-//       if (nameA < nameB) {
-//         value = -1;
-//       } else {
-//         value = 1;
-//       }
-//       if (order === 'desc') {
-//         value *= -1;
-//       }
-//       return value;
-//     });
-//     this.setState({
-//       userData,
-//       sortField: field,
-//       sortOrder: order
-//     });
-//   };
-
-//   render() {
-//     const { userData } = this.state;
-//     return (
-//       <div className="center">
-//         <CreateEmployee createEmployee={this.createEmployee} />
-//         <ListEmployee
-//           empData={userData}
-//           updateEmployee={this.updateEmployee}
-//           deleteEmployee={this.deleteEmployee}
-//           sortEmployee={this.sortEmployee}
-//           sortDepartment={this.sortDepartment}
-//           filterEmployee={this.filterEmployee}
-//           filterDepartment={this.filterDepartment}
-//           sortMonth={this.sortMonth}
-//           filterMonth={this.filterMonth}
-//         />
-//       </div>
-//     );
-//   }
-// }
+}
 
 
-const Employee = ({ employees }) =>
+const Details = ({ employees }) =>
   <div>
     <CreateEmployee />
-    <ListEmployee
-      empData={employees}
-    />
+    <ListEmployees employees={employees} />
   </div>
 
 function getStores() {
@@ -400,4 +251,4 @@ function getState() {
   };
 }
 
-export default Container.createFunctional(Employee, getStores, getState);
+export default Container.createFunctional(Details, getStores, getState);
