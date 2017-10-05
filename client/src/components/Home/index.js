@@ -130,23 +130,19 @@ class Emp extends Component {
     }
     const { emp } = this.props;
     return (
-      <div>
-        <table>
-          <tr>
-            <td>
-              {emp.name}
-            </td>
-            <td>
-              {emp.department}
-            </td>
-            <td>
-              {emp.month}
-            </td>
-          </tr>
-        </table>
+      <tr>
+        <td>
+          {emp.name}
+        </td>
+        <td>
+          {emp.department}
+        </td>
+        <td>
+          {emp.month}
+        </td>
         <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
         <input type="button" value="Delete" onClick={this.deleteEmployee} />
-      </div>
+      </tr>
     );
   }
 }
@@ -236,6 +232,7 @@ class ListEmployees extends Component {
           </th>
         </tr>
       </table>
+      <table>
       {empData && empData.map(emp =>
         <div key={emp.id}>
           <Emp
@@ -245,6 +242,7 @@ class ListEmployees extends Component {
           />
         </div>
       )}
+      </table>
       <div>
         Total Employee {empData && empData.length}
       </div>

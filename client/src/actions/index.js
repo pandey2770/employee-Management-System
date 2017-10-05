@@ -8,33 +8,36 @@ export const getEmployees = () => {
       data
     });
   });
-}
+};
 
 export const createEmployee = (name, department, month) => {
-  axios.post('/api/employee/', { employee: { name, department, month } }).then(({ data }) => {
-    dispatcher.dispatch({
-      type: 'CREATE_EMPLOYEE',
-      data: {name, department, month, id: data.id}
+  axios
+    .post('/api/employee/', { employee: { name, department, month } })
+    .then(({ data }) => {
+      dispatcher.dispatch({
+        type: 'CREATE_EMPLOYEE',
+        data: { name, department, month, id: data.id }
+      });
     });
-  });
-}
-export const deleteEmployee = (id) => {
-  console.log('id ', id)
-  axios.delete(`/api/employee/${id}`).then(({id})=>{
+};
+export const deleteEmployee = id => {
+  console.log('id ', id);
+  axios.delete(`/api/employee/${id}`).then(() => {
     dispatcher.dispatch({
       type: 'REMOVE_EMPLOYEE',
       id
     });
   });
-}
+};
 
-export const updateEmployee = ( name, department, month, id)  => {
-  axios.put(`/api/employee/${id}`, { employee: { name, department, month }}).then(()=>{
-    dispatcher.dispatch({
-      type: 'UPDATE_EMPLOYEE',
-      id,
-      data: {name, department, month, id}
+export const updateEmployee = (name, department, month, id) => {
+  axios
+    .put(`/api/employee/${id}`, { employee: { name, department, month } })
+    .then(() => {
+      dispatcher.dispatch({
+        type: 'UPDATE_EMPLOYEE',
+        id,
+        data: { name, department, month, id }
+      });
     });
-  })
-}
-
+};
