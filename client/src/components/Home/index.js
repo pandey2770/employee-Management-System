@@ -1,158 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import {Container} from 'flux/utils';
-import { createEmployee, deleteEmployee, updateEmployee } from '../../actions';
+import { Container } from 'flux/utils';
 import AppStore from '../../store';
+import CreateEmployee from './createEmployee';
+import Employee from './employee';
 import './styles.css';
-
-class CreateEmployee extends Component {
-  state = {
-    name: '',
-    department: '',
-    month: ''
-  };
-
-  updateValue = event => {   
-    this.setState({
-      [`${event.target.name}`]: event.target.value
-    });
-  };
-
-  createEmployee = () => {
-    const { name, department, month } = this.state;
-    createEmployee(name, department, month);
-  };
-
-  render() {
-    const { name, department, month } = this.state;
-    return (
-      <div>
-        <input
-          type="text"
-          placeholder="Name"
-          name="name"
-          value={name}
-          onChange={this.updateValue}
-        />
-        <input
-          type="text"
-          placeholder="department"
-          name="department"
-          value={department}
-          onChange={this.updateValue}
-        />
-        <input
-          type="text"
-          placeholder="month"
-          name="month"
-          value={month}
-          onChange={this.updateValue}
-        />
-        <input type="button" value="Save" onClick={this.createEmployee} />
-      </div>
-    );
-  }
-}
-
-class Emp extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      editing: false,
-      name: props.emp.name,
-      department: props.emp.department,
-      month: props.emp.month
-    };
-  }
-
-  toggleEditEmployee = () => {
-    const { editing } = this.state;
-    this.setState({
-      editing: !editing
-    });
-  };
-
-  updateValue = event => {
-    this.setState({
-      [`${event.target.name}`]: event.target.value
-    });
-  };
-
-  deleteEmployee = () => {
-    const { id } = this.props.emp;
-    deleteEmployee(id);
-  };
-
-  updateEmployee = () => {
-    const { name, department, month } = this.state;
-    const { id } = this.props.emp;
-    updateEmployee(name, department, month, id);
-    this.toggleEditEmployee();
-  };
-
-  render() {
-    const { editing } = this.state;
-    if (editing) {
-      const { name, department, month } = this.state;
-      return (
-        <div>
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={this.updateValue}
-          />
-          <input
-            type="text"
-            placeholder="department"
-            name="department"
-            value={department}
-            onChange={this.updateValue}
-          />
-          <input
-            type="text"
-            placeholder="month"
-            name="month"
-            value={month}
-            onChange={this.updateValue}
-          />
-          <input type="button" value="Save" onClick={this.updateEmployee} />
-          <input
-            type="button"
-            value="Cancel"
-            onClick={this.toggleEditEmployee}
-          />
-        </div>
-      );
-    }
-    const { emp } = this.props;
-    return (
-      <tr>
-        <td>
-        <Link to={`/emp/${emp.id}`}>{emp.name} </Link>
-        </td>
-        <td>
-          {emp.department}
-        </td>
-        <td>
-          {emp.month}
-        </td>
-        <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
-        <input type="button" value="Delete" onClick={this.deleteEmployee} />
-      </tr>
-    );
-  }
-}
 
 class ListEmployees extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: '',
-      department: '',
-      month: '',
       empData: props.employees
     };
   }
@@ -164,33 +20,30 @@ class ListEmployees extends Component {
   }
 
   sortEmployee = event => {
-    const { empData, sortField, sortOrder } = this.state;
-    const { name: field } = event.target;    
-    let order = 'asc';
-    if (field === sortField) {
-      order = sortOrder === 'asc' ? 'desc' : 'asc';
-    }    
-    empData.sort(function(a, b) {
-      var fieldA = a[field].toLowerCase(),
-      fieldB = b[field].toLowerCase();
-      if (fieldA === fieldB) {
+    const { empData } = this.state;
+    const { name: sortField } = event.target;
+    let sortOrder = 'asc';
+    if (sortField === this.state.sortField) {
+      sortOrder = this.state.sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+
+    empData.sort(function(emp1, emp2) {
+      const field1 = emp1[sortField].toLowerCase();
+      const field2 = emp2[sortField].toLowerCase();
+      if (field1 === field2) {
         return 0;
       }
-      let value;
-      if (fieldA < fieldB) {
-        value = -1;
-      } else {
-        value = 1;
-      }
-      if (order === 'desc') {
+      let value = field1 < field2 ? -1 : 1;
+      if (sortOrder === 'desc') {
         value *= -1;
       }
       return value;
-    }); 
+    });
+
     this.setState({
       empData,
-      sortField: field,
-      sortOrder: order
+      sortField,
+      sortOrder
     });
   };
 
@@ -206,56 +59,42 @@ class ListEmployees extends Component {
 
   render() {
     const { empData } = this.state;   
-  return (
-    <div>
-      <table>
-        <tr>
-          <th>
-            Name
-            <input name="name" type="button" onClick={this.sortEmployee} />
-            <br />
-            <input name="name" type="text" placeholder="Filter" onChange={this.filterEmployee} />
-          </th>
-          <th>
-            Department
-            <input name="department" type="button" onClick={this.sortEmployee} />
-            <br />
-            <input
-              type="text"
-              name="department"
-              placeholder="Filter"
-              onChange={this.filterEmployee}
-            />
-          </th>
-          <th>
-            Month
-            <input name="month" type="button" onClick={this.sortEmployee} />
-            <br />
-            <input name="month" type="text" placeholder="Filter" onChange={this.filterEmployee} />
-          </th>
-        </tr>
-      </table>
-      <table>
-      {empData && empData.map(emp =>
-        <div key={emp.id}>
-          <Emp
-            emp={emp}
-            updateEmployee={this.props.updateEmployee}
-            deleteEmployee={this.props.deleteEmployee}
-          />
-        </div>
-      )}
-      </table>
+    return (
       <div>
-        Total Employee {empData && empData.length}
+        <table>
+          <tbody>
+            <tr>
+              <th>Name<input name="name" type="button" onClick={this.sortEmployee} /></th>
+              <th>Department<input name="department" type="button" onClick={this.sortEmployee} /></th>
+              <th>Month<input name="month" type="button" onClick={this.sortEmployee} /></th>
+              <th />
+            </tr>
+            <tr>
+              <td><input name="name" type="text" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="department" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="month" type="text" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td />
+            </tr>
+            {empData && empData.map(emp =>
+              <Employee
+                key={emp.id}
+                emp={emp}
+                updateEmployee={this.props.updateEmployee}
+                deleteEmployee={this.props.deleteEmployee}
+              />
+            )}
+          </tbody>
+        </table>
+        <div>
+          Total Employee {empData && empData.length}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 }
 
 
-const Details = ({ employees }) =>
+const Home = ({ employees }) =>
   <div>
     <CreateEmployee />
     <ListEmployees employees={employees} />
@@ -273,4 +112,4 @@ function getState() {
   };
 }
 
-export default Container.createFunctional(Details, getStores, getState);
+export default Container.createFunctional(Home, getStores, getState);

@@ -20,6 +20,7 @@ export const createEmployee = (name, department, month) => {
       });
     });
 };
+
 export const deleteEmployee = id => {
   axios.delete(`/api/employee/${id}`).then(() => {
     dispatcher.dispatch({

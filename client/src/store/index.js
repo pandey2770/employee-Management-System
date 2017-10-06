@@ -15,16 +15,15 @@ class AppStore extends ReduceStore {
 
     switch (action.type) {
       case 'GET_ALL_EMPLOYEE':
-        return (state = action.data);
+        return [...action.data];
       case 'CREATE_EMPLOYEE':
-        return (state = [...state, action.data]);
+        return [...state, action.data];
       case 'REMOVE_EMPLOYEE':
         index = state.findIndex(employee => employee.id === action.id);
         state.splice(index, 1);
         return [...state];
       case 'UPDATE_EMPLOYEE':
         const employee = action.data;
-        console.log(employee)
         index = state.findIndex(employee => employee.id === action.id);
         state[index] = employee;
         return [...state];

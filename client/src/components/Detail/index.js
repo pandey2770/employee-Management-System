@@ -1,22 +1,20 @@
-import React, { Component} from 'react';
-import {Container} from 'flux/utils';
+import React, { Component } from 'react';
+import { Container } from 'flux/utils';
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom';
 import { deleteEmployee, updateEmployee } from '../../actions';
 import AppStore from '../../store';
 import './styles.css';
 
-class Detail extends Component {
+class EmployeeDetail extends Component {
+
   constructor(props) {
     super(props);
-
     this.state = {
       editing: false,
-      name: '',
-      department: '',
-      month: '',
+      employee: undefined
     };
   }
+
   componentWillMount() {
     const { employees, match: {params: { id }}} = this.props;
     if (employees && id) {
@@ -24,14 +22,9 @@ class Detail extends Component {
     }
   }
 
-  deleteEmployee = () => {
-    const { id } = this.state.employee;
-    deleteEmployee(id);
-  };
-
   componentWillReceiveProps(props) {
     const { employees, match: {params: { id }}} = props;
-    if ((this.props.employees !== employees) && id && !this.state.employee) {
+    if ((this.props.employees !== employees) && id) {
       this.setCurrentEmployee(employees, id);
     }
   }
@@ -42,6 +35,13 @@ class Detail extends Component {
       employee
     });
   }
+
+  deleteEmployee = () => {
+    const { id } = this.state.employee;
+    deleteEmployee(id);
+    this.props.history.push('/');
+  };
+
   toggleEditEmployee = () => {
     const { editing } = this.state;
     this.setState({
@@ -60,59 +60,33 @@ class Detail extends Component {
   };
 
   updateEmployee = () => {
-    const { name, department, month } = this.state;
-    const { id } = this.state.employee;
-    updateEmployee(name, department, month, id);    
+    const { name, department, month, id } = this.state.employee;
+    updateEmployee(name, department, month, id);
     this.toggleEditEmployee();
   };
 
   render() {
-    const { employee } = this.state;
-    const { editing } = this.state;
+    const { employee: emp, editing } = this.state;
     if (editing) {
-      const { name, department, month } = this.state.employee;
       return (
         <div>
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={this.updateValue}
-          />
-          <input
-            type="text"
-            placeholder="department"
-            name="department"
-            value={department}
-            onChange={this.updateValue}
-          />
-          <input
-            type="text"
-            placeholder="month"
-            name="month"
-            value={month}
-            onChange={this.updateValue}
-          />
+          <input placeholder="Name" name="name" value={emp && emp.name} onChange={this.updateValue} />
+          <input placeholder="department" name="department" value={emp && emp.department} onChange={this.updateValue} />
+          <input placeholder="month" name="month" value={emp && emp.month} onChange={this.updateValue} />
           <input type="button" value="Save" onClick={this.updateEmployee} />
-          <input
-            type="button"
-            value="Cancel"
-            onClick={this.toggleEditEmployee}
-          />
+          <input type="button" value="Cancel" onClick={this.toggleEditEmployee} />
         </div>
       );
     }
     return (
       <div>
-        <div className="center">
+        <div className="center-content">
           <h1>Details page</h1>
-          {employee && employee.name}
-          {employee && employee.department}
-          {employee && employee.month}
+          {emp && emp.name}
+          {emp && emp.department}
+          {emp && emp.month}
         </div>
-        <Link to={`/emp`}>
-        <input type='button' value='delete' onClick={this.deleteEmployee} /></Link>
+        <input type='button' value='delete' onClick={this.deleteEmployee} />
         <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
       </div>  
     );
@@ -131,4 +105,4 @@ function getState() {
   };
 }
 
-export default  Container.createFunctional(withRouter(Detail), getStores, getState);
+export default  Container.createFunctional(withRouter(EmployeeDetail), getStores, getState);

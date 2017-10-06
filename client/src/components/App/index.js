@@ -12,7 +12,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="center">
+      <div className="center-content">
         <h1>Employee Management System</h1>
         <Switch>
           <Route path="/emp/:id" component={Detail} />
