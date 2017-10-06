@@ -30,8 +30,7 @@ export const deleteEmployee = id => {
 };
 
 export const updateEmployee = (name, department, month, id) => {
-  axios
-    .put(`/api/employee/${id}`, { employee: { name, department, month } })
+  axios.put(`/api/employee/${id}`, { employee: { name, department, month } })
     .then(() => {
       dispatcher.dispatch({
         type: 'UPDATE_EMPLOYEE',

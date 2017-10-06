@@ -12,6 +12,9 @@ class Detail extends Component {
 
     this.state = {
       editing: false,
+      name: '',
+      department: '',
+      month: '',
     };
   }
   componentWillMount() {
@@ -27,8 +30,9 @@ class Detail extends Component {
   };
 
   componentWillReceiveProps(props) {
+    console.log('into componentWillReceiveProps')
     const { employees, match: {params: { id }}} = props;
-    if (props.employees && id && !this.state.employee) {
+    if ((this.props.employees !== employees) && id && !this.state.employee) {
       this.setCurrentEmployee(employees, id);
     }
   }
@@ -47,8 +51,12 @@ class Detail extends Component {
   };
 
   updateValue = event => {
+    const { employee } = this.state;
     this.setState({
-      [`${event.target.name}`]: event.target.value
+      employee: {
+        ...employee,
+        [`${event.target.name}`]: event.target.value
+      }
     });
   };
 

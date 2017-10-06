@@ -24,6 +24,7 @@ class AppStore extends ReduceStore {
         return [...state];
       case 'UPDATE_EMPLOYEE':
         const employee = action.data;
+        console.log(employee)
         index = state.findIndex(employee => employee.id === action.id);
         state[index] = employee;
         return [...state];
