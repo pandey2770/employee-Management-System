@@ -30,7 +30,6 @@ class Detail extends Component {
   };
 
   componentWillReceiveProps(props) {
-    console.log('into componentWillReceiveProps')
     const { employees, match: {params: { id }}} = props;
     if ((this.props.employees !== employees) && id && !this.state.employee) {
       this.setCurrentEmployee(employees, id);
