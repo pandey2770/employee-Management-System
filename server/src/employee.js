@@ -2,8 +2,7 @@ const uuidv1 = require("uuid/v1");
 const DB = require("./db");
 
 async function getAllemployee() {
-  const employee = await DB.get("SELECT * FROM employee");
-  return employee;
+  return await DB.get("SELECT * FROM employee");
 }
 
 async function createEmployee({ name, department, month}) {
@@ -12,8 +11,7 @@ async function createEmployee({ name, department, month}) {
     text: "INSERT INTO employee VALUES($1, $2, $3, $4 )",
     values:  [name, department, id, month],
   };
-  await DB.mutate(query);
-  return id;
+  return await DB.mutate(query);
 }
 
 async function deleteEmployee(id) {

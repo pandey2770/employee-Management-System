@@ -18,6 +18,8 @@ export const createEmployee = (name, department, month) => {
         type: 'CREATE_EMPLOYEE',
         data: { name, department, month, id: data.id }
       });
+    }, () => {
+      console.log('create employee failed 😣');
     });
 };
 
@@ -27,6 +29,8 @@ export const deleteEmployee = id => {
       type: 'REMOVE_EMPLOYEE',
       id
     });
+  }, () => {
+    console.log('delete employee failed 😣');
   });
 };
 
@@ -38,5 +42,7 @@ export const updateEmployee = (name, department, month, id) => {
         id,
         data: { name, department, month, id }
       });
+    }, () => {
+      console.log('update employee failed 😣');
     });
 };
