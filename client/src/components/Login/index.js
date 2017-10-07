@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router'
 import { login } from '../../actions';
+import './styles.css';
+
 
 class Login extends Component {
   state = {
@@ -14,8 +17,9 @@ class Login extends Component {
   };
 
   login = () => {
+    const { history } = this.props;
     const { username, password } = this.state;
-    login(username, password);
+    login(username, password, history);
   }
 
   render() {
@@ -30,4 +34,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

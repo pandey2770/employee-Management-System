@@ -1,10 +1,22 @@
 import axios from 'axios';
 import dispatcher from '../dispatcher';
 
-export const login = (username, password) => {
+export const login = (username, password, history) => {
   axios.post('/api/login', {username, password}).then((data) => {
+    history.push('/');
+    getEmployees();
     dispatcher.dispatch({
       type: 'LOGIN_SUCCESS',
+      data
+    });
+  });
+}
+
+export const logout = ( history) => {
+  axios.get('/api/logout').then((data) => {
+    history.push('/login');
+    dispatcher.dispatch({
+      type: 'LOGOUT_SUCCESS',
       data
     });
   });

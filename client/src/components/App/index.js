@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { getEmployees } from '../../actions';
+import { withRouter } from 'react-router'
 import Home from '../Home';
 import Login from '../Login';
+import {logout} from '../../actions';
 import Detail from '../Detail';
 import Create from '../Create';
 import './styles.css';
 
 class App extends Component {
-  componentWillMount() {
-    getEmployees();
+
+  logout = () => {
+    const { history } = this.props;
+    logout(history);
   }
 
   render() {
     return (
       <div className="center-content">
+        <input type='button' value='logout' onClick={this.logout}/>
         <h1>Employee Management System</h1>
         <Switch>
           <Route path="/show" component={Create} />
@@ -26,4 +30,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default  withRouter(App);

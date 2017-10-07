@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Container } from 'flux/utils';
-import AppStore from '../../store';
-import Employee from './employee';
 import { Link } from 'react-router-dom';
+
+import AppStore from '../../store';
+import { getEmployees } from '../../actions';
+import Employee from './employee';
 import './styles.css';
 
 class ListEmployees extends Component {
