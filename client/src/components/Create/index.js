@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 import { createEmployee } from '../../actions';
 
-export default class CreateEmployee extends Component {
+class CreateEmployee extends Component {
   state = {
     name: '',
     department: '',
@@ -16,7 +18,7 @@ export default class CreateEmployee extends Component {
 
   createEmployee = () => {
     const { name, department, month } = this.state;
-    createEmployee(name, department, month);
+    createEmployee(name, department, month, this.props.history);
   };
 
   render() {
@@ -27,7 +29,10 @@ export default class CreateEmployee extends Component {
         <input placeholder="department" name="department" value={department} onChange={this.updateValue} />
         <input placeholder="month" name="month" value={month} onChange={this.updateValue} />
         <input type="button" value="Save" onClick={this.createEmployee} />
+        <Link to={`/`}><input type='button' value='show' /></Link>
       </div>
     );
   }
 }
+
+export default withRouter(CreateEmployee);

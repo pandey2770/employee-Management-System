@@ -16,8 +16,8 @@ app.get("/api/employee", async function(req, res) {
 });
 
 app.post('/api/employee', async (req, res) => {
-  const rowCount = await employee.createEmployee(req.body.employee);
-  if (rowCount === 1) {
+  const id = await employee.createEmployee(req.body.employee);
+  if (id) {
     res.json({ id });
   } else {
     res.status(500).send('Error while creating employee !')

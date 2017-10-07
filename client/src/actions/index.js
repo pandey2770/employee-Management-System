@@ -10,7 +10,7 @@ export const getEmployees = () => {
   });
 };
 
-export const createEmployee = (name, department, month) => {
+export const createEmployee = (name, department, month, history) => {
   axios
     .post('/api/employee/', { employee: { name, department, month } })
     .then(({ data }) => {
@@ -18,6 +18,7 @@ export const createEmployee = (name, department, month) => {
         type: 'CREATE_EMPLOYEE',
         data: { name, department, month, id: data.id }
       });
+      history.push(`/employee/${data.id}`)
     }, () => {
       console.log('create employee failed 😣');
     });

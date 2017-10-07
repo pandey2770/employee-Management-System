@@ -11,7 +11,8 @@ async function createEmployee({ name, department, month}) {
     text: "INSERT INTO employee VALUES($1, $2, $3, $4 )",
     values:  [name, department, id, month],
   };
-  return await DB.mutate(query);
+  await DB.mutate(query);
+  return id;
 }
 
 async function deleteEmployee(id) {

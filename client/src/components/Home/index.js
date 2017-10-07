@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container } from 'flux/utils';
 import AppStore from '../../store';
-import CreateEmployee from './createEmployee';
 import Employee from './employee';
+import { Link } from 'react-router-dom';
 import './styles.css';
 
 class ListEmployees extends Component {
@@ -87,6 +87,7 @@ class ListEmployees extends Component {
         </table>
         <div>
           Total Employee {empData && empData.length}
+          <Link to={`/show`}><input type='button' value='Go to Create Employee' /></Link>
         </div>
       </div>
     );
@@ -96,7 +97,6 @@ class ListEmployees extends Component {
 
 const Home = ({ employees }) =>
   <div>
-    <CreateEmployee />
     <ListEmployees employees={employees} />
   </div>
 

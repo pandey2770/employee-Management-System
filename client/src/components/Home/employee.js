@@ -54,7 +54,7 @@ export default class Employee extends Component {
     const { emp } = this.props;
     return (
       <tr>
-        <td><Link to={`/emp/${emp.id}`}>{emp.name} </Link></td>
+        <td><Link to={`/employee/${emp.id}`}>{emp.name} </Link></td>
         <td>{emp.department}</td>
         <td>{emp.month}</td>
         <td>

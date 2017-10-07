@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { getEmployees } from '../../actions';
 import Home from '../Home';
 import Detail from '../Detail';
+import Create from '../Create';
 import './styles.css';
 
 class App extends Component {
@@ -15,7 +16,8 @@ class App extends Component {
       <div className="center-content">
         <h1>Employee Management System</h1>
         <Switch>
-          <Route path="/emp/:id" component={Detail} />
+          <Route path="/show" component={Create} />
+          <Route path="/employee/:id" component={Detail} />
           <Route path="/" component={Home} />
         </Switch>
     </div>);
