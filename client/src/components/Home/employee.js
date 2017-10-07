@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteEmployee, updateEmployee } from '../../actions';
+import { formatDate } from '../../utils';
 
 export default class Employee extends Component {
   constructor(props) {
@@ -9,7 +10,10 @@ export default class Employee extends Component {
       editing: false,
       name: props.emp.name,
       department: props.emp.department,
-      month: props.emp.month
+      address:props.emp.address,
+      phone:props.emp.phone,
+      dob:props.emp.dob,
+      doj:props.emp.doj
     };
   }
 
@@ -33,19 +37,22 @@ export default class Employee extends Component {
 
   updateEmployee = () => {
     const { id } = this.props.emp;
-    const { name, department, month } = this.state;
-    updateEmployee(name, department, month, id);
+    const { name, department, phone, address , dob, doj } = this.state;
+    updateEmployee(name, department, phone, address , dob, doj, id);
     this.toggleEditEmployee();
   };
 
   render() {
-    const { editing, name, department, month } = this.state;
+    const { editing, name, department, phone, address , dob, doj } = this.state;
     if (editing) {
       return (
         <div>
           <input placeholder="Name" name="name" value={name} onChange={this.updateValue} />
           <input placeholder="department" name="department" value={department} onChange={this.updateValue} />
-          <input placeholder="month" name="month" value={month} onChange={this.updateValue} />
+          <input placeholder="phone" name="phone" value={phone} onChange={this.updateValue} />
+          <input placeholder="address" name="address" value={address} onChange={this.updateValue} />
+          <input placeholder="dob" name="dob" value={dob} onChange={this.updateValue} />
+          <input placeholder="doj" name="doj" value={doj} onChange={this.updateValue} />
           <input type="button" value="Save" onClick={this.updateEmployee} />
           <input type="button" value="Cancel" onClick={this.toggleEditEmployee} />
         </div>
@@ -56,7 +63,10 @@ export default class Employee extends Component {
       <tr>
         <td><Link to={`/employee/${emp.id}`}>{emp.name} </Link></td>
         <td>{emp.department}</td>
-        <td>{emp.month}</td>
+        <td>{emp.phone}</td>
+        <td>{emp.address}</td>
+        <td>{formatDate(emp.dob)}</td>
+        <td>{formatDate(emp.doj)}</td>
         <td>
           <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
           <input type="button" value="Delete" onClick={this.deleteEmployee} />

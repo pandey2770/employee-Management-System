@@ -66,13 +66,19 @@ class ListEmployees extends Component {
             <tr>
               <th>Name<input name="name" type="button" onClick={this.sortEmployee} /></th>
               <th>Department<input name="department" type="button" onClick={this.sortEmployee} /></th>
-              <th>Month<input name="month" type="button" onClick={this.sortEmployee} /></th>
+              <th>phone<input name="phone" type="button" onClick={this.sortEmployee} /></th>
+              <th>Address<input name="Address" type="button" onClick={this.sortEmployee} /></th>
+              <th>dob<input name="dob" type="button" onClick={this.sortEmployee} /></th>
+              <th>doj<input name="doj" type="button" onClick={this.sortEmployee} /></th>
               <th />
             </tr>
             <tr>
-              <td><input name="name" type="text" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="name"  placeholder="Filter" onChange={this.filterEmployee} /></td>
               <td><input name="department" placeholder="Filter" onChange={this.filterEmployee} /></td>
-              <td><input name="month" type="text" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="phone" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="Address" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="dob" placeholder="Filter" onChange={this.filterEmployee} /></td>
+              <td><input name="doj" placeholder="Filter" onChange={this.filterEmployee} /></td>
               <td />
             </tr>
             {empData && empData.map(emp =>

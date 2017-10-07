@@ -10,13 +10,13 @@ export const getEmployees = () => {
   });
 };
 
-export const createEmployee = (name, department, month, history) => {
+export const createEmployee = (name, department, phone, address , dob, doj, history) => {
   axios
-    .post('/api/employee/', { employee: { name, department, month } })
+    .post('/api/employee/', { employee: { name, department, phone, address , dob, doj } })
     .then(({ data }) => {
       dispatcher.dispatch({
         type: 'CREATE_EMPLOYEE',
-        data: { name, department, month, id: data.id }
+        data: { name, department, phone, address , dob, doj, id: data.id }
       });
       history.push(`/employee/${data.id}`)
     }, () => {
@@ -35,13 +35,13 @@ export const deleteEmployee = id => {
   });
 };
 
-export const updateEmployee = (name, department, month, id) => {
-  axios.put(`/api/employee/${id}`, { employee: { name, department, month } })
+export const updateEmployee = (name, department, phone, address , dob, doj, id) => {
+  axios.put(`/api/employee/${id}`, { employee: { name, department, phone, address , dob, doj } })
     .then(() => {
       dispatcher.dispatch({
         type: 'UPDATE_EMPLOYEE',
         id,
-        data: { name, department, month, id }
+        data: { name, department, phone, address , dob, doj, id }
       });
     }, () => {
       console.log('update employee failed 😣');

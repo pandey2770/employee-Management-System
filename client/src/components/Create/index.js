@@ -7,7 +7,10 @@ class CreateEmployee extends Component {
   state = {
     name: '',
     department: '',
-    month: ''
+    phone:'',
+    address:'',
+    dob:'',
+    doj:''
   };
 
   updateValue = event => {   
@@ -17,20 +20,23 @@ class CreateEmployee extends Component {
   };
 
   createEmployee = () => {
-    const { name, department, month } = this.state;
-    createEmployee(name, department, month, this.props.history);
+    const { name, department, phone, address , dob, doj } = this.state;
+    createEmployee(name, department, phone, address , dob, doj, this.props.history);
   };
 
   render() {
-    const { name, department, month } = this.state;
+    const { name, department, phone, address , dob, doj } = this.state;
     return (
       <div>
         <input placeholder="Name" name="name" value={name} onChange={this.updateValue} />
         <input placeholder="department" name="department" value={department} onChange={this.updateValue} />
-        <input placeholder="month" name="month" value={month} onChange={this.updateValue} />
+        <input placeholder="phone" name="phone" value={phone} onChange={this.updateValue} />
+        <input placeholder="address" name="address" value={address} onChange={this.updateValue} />
+        <input placeholder="dob" name="dob" value={dob} onChange={this.updateValue} />
+        <input placeholder="doj" name="doj" value={doj} onChange={this.updateValue} />
         <input type="button" value="Save" onClick={this.createEmployee} />
-        <Link to={`/`}><input type='button' value='show' /></Link>
-      </div>
+        <Link to={`/`}><input type='button' value='Go To List Page' /></Link>
+        </div>
     );
   }
 }
