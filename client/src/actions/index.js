@@ -1,6 +1,15 @@
 import axios from 'axios';
 import dispatcher from '../dispatcher';
 
+export const login = (username, password) => {
+  axios.post('/api/login', {username, password}).then((data) => {
+    dispatcher.dispatch({
+      type: 'LOGIN_SUCCESS',
+      data
+    });
+  });
+}
+
 export const getEmployees = () => {
   axios.get('/api/employee').then(({ data }) => {
     dispatcher.dispatch({
