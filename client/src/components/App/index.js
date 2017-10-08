@@ -11,20 +11,45 @@ import Detail from '../Detail';
 import Create from '../Create';
 import './styles.css';
 
-class Temp extends Component {
+class Logout extends Component {
+
   logout = () => {
     const { history } = this.props;
     logout(history);
   }
 
   render() {
-    const { user } = this.props;
+    return <input type='button' value='logout' onClick={this.logout}/>;
+  }
+}
+
+const LogoutBtn = withRouter(Logout);
+
+class App extends Component {
+  componentWillMount() {
+    getUser();
+  }
+
+  static getStores() {
+    return [
+      UserStore
+    ];
+  }
+  
+  static calculateState() {
+    return {
+      user: UserStore.getState()
+    };
+  }
+  
+  render() {
+    const { user } = this.state;
     return (
       <div className="center-content">
       {user && 
       <div>
-        <span>{user.username}{this.props.location.pathname}</span>
-        <input type='button' value='logout' onClick={this.logout}/>
+        <span>{user.username}</span>
+        <LogoutBtn />
       </div>}
       <h1>Employee Management System</h1>
       {user ?
@@ -39,34 +64,4 @@ class Temp extends Component {
   }
 }
 
-function getStores() {
-  return [
-    UserStore
-  ];
-}
-
-function getState() {
-  return {
-    user: UserStore.getState()
-  };
-}
-
-const Temp2 = Container.createFunctional(withRouter(Temp), getStores, getState);
-
-class App extends Component {
-
-  componentWillMount() {
-    getUser();
-  }
-
-  render() {
-    console.log('into render of app')
-    const { user } = this.props;
-    return (
-      <Temp2 user={user} location={this.props.location.pathname} />
-    );
-  }
-}
-
-
-export default withRouter(App);
+export default  Container.create(App, {withProps: true});

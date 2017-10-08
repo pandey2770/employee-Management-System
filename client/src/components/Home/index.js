@@ -6,20 +6,20 @@ import EmployeeStore from '../../store/employee';
 import Employee from './employee';
 import './styles.css';
 
-class ListEmployees extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      empData: props.employees
+class Home extends Component {
+  static getStores() {
+    return [
+      EmployeeStore
+    ];
+  }
+  
+  static calculateState() {
+    return {
+      employees: EmployeeStore.getState(),
+      empData: EmployeeStore.getState(),
     };
   }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      empData: props.employees
-    });
-  }
-
+    
   sortEmployee = event => {
     const { empData } = this.state;
     const { name: sortField } = event.target;
@@ -50,7 +50,7 @@ class ListEmployees extends Component {
 
   filterEmployee = event => {
     const { value, name } = event.target;
-    const empData = this.props.employees.filter(
+    const empData = this.state.employees.filter(
       emp => emp[name].indexOf(value) >= 0         
     );
     this.setState({
@@ -102,21 +102,4 @@ class ListEmployees extends Component {
 }
 
 
-const Home = ({ employees }) =>
-  <div>
-    <ListEmployees employees={employees} />
-  </div>
-
-function getStores() {
-  return [
-    EmployeeStore
-  ];
-}
-
-function getState() {
-  return {
-    employees: EmployeeStore.getState(),
-  };
-}
-
-export default Container.createFunctional(Home, getStores, getState);
+export default Container.create(Home);
