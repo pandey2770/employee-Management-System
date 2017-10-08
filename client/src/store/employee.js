@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import dispatcher from '../dispatcher';
 
-class AppStore extends ReduceStore {
+class EmployeeStore extends ReduceStore {
   constructor() {
     super(dispatcher);
   }
@@ -33,4 +33,4 @@ class AppStore extends ReduceStore {
   }
 }
 
-export default new AppStore();
+export default new EmployeeStore();

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'flux/utils';
 import { Link } from 'react-router-dom';
 
-import AppStore from '../../store';
-import { getEmployees } from '../../actions';
+import EmployeeStore from '../../store/employee';
 import Employee from './employee';
 import './styles.css';
 
@@ -95,7 +94,7 @@ class ListEmployees extends Component {
         </table>
         <div>
           Total Employee {empData && empData.length}
-          <Link to={`/show`}><input type='button' value='Go to Create Employee' /></Link>
+          <Link to={`/create`}><input type='button' value='Go to Create Employee' /></Link>
         </div>
       </div>
     );
@@ -110,13 +109,13 @@ const Home = ({ employees }) =>
 
 function getStores() {
   return [
-    AppStore
+    EmployeeStore
   ];
 }
 
 function getState() {
   return {
-    employees: AppStore.getState(),
+    employees: EmployeeStore.getState(),
   };
 }
 

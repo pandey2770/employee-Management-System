@@ -23,25 +23,32 @@ app.use(bodyParser.json());
 app.post('/api/login',
   passport.authenticate('local'),
   function(req, res) {
-    res.status(200).send();
+    res.json(req.user);
   }
 );
 
-app.get('/api/logout', function(req, res){
+app.get('/api/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
-app.get("/api/employee", async (req, res) => {
+const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    const employeeList = await Employee.getAllemployee();
-    res.json(employeeList)
-  } else {
-    res.status(401).send();
+    return next();
   }
+  res.status(401).send();
+}
+
+app.get('/api/user', isAuthenticated, (req, res) => {
+  res.json(req.user[0]);
 });
 
-app.post('/api/employee', async (req, res) => {
+app.get("/api/employee", isAuthenticated, async (req, res) => {
+  const employeeList = await Employee.getAllemployee();
+  res.json(employeeList)
+});
+
+app.post('/api/employee', isAuthenticated, async (req, res) => {
   const id = await Employee.createEmployee(req.body.employee);
   if (id) {
     res.json({ id });
@@ -50,7 +57,7 @@ app.post('/api/employee', async (req, res) => {
   }
 });
 
-app.delete('/api/employee/:id', async (req, res) => {
+app.delete('/api/employee/:id', isAuthenticated, async (req, res) => {
   const rowCount = await Employee.deleteEmployee(req.params.id);
   if (rowCount === 1) {
     res.json({ id: req.params.id });
@@ -59,8 +66,7 @@ app.delete('/api/employee/:id', async (req, res) => {
   }
 });
 
-app.put('/api/employee/:id', async (req, res) => {
-  console.log('****', req.user, req.isAuthenticated())
+app.put('/api/employee/:id', isAuthenticated, async (req, res) => {
   const rowCount = await Employee.updateEmployee(req.params.id, req.body.employee);
   if (rowCount === 1) {
     res.json({ id: req.params.id });
@@ -73,11 +79,11 @@ app.listen(6001, () => console.log("Server started on port 6001"));
 
 
 /**
- * 1. auth middleware
+ * √ 1. auth middleware
  * √ 2. logout
- * 3. seure all api
- * 4. api to get user details
- * 5. show username on frontend
+ * √ 3. seure all api
+ * √ 4. api to get user details
+ * 5. create username on frontend
  * 6. redirect user to login page on FE if not loggedin
  * 7. Move employee get query
  */

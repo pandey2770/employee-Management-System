@@ -7,7 +7,6 @@ async function getAllemployee() {
 
 async function createEmployee({ name, department, month, phone, address , dob, doj }) {
   const id = uuidv1();
-  console.log('dob, doj', dob, doj)
   const query = {
     text: "INSERT INTO employee(name, department, id, dob, doj, phone, address) VALUES($1, $2, $3, $4, $5, $6, $7)",
     values:  [name, department, id, dob, doj, phone, address],

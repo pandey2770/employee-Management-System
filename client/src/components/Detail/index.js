@@ -4,7 +4,7 @@ import { formatDate } from '../../utils';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { deleteEmployee, updateEmployee } from '../../actions';
-import AppStore from '../../store';
+import EmployeeStore from '../../store/employee';
 import './styles.css';
 
 class EmployeeDetail extends Component {
@@ -104,13 +104,13 @@ class EmployeeDetail extends Component {
 
 function getStores() {
   return [
-    AppStore
+    EmployeeStore
   ];
 }
 
 function getState() {
   return {
-    employees: AppStore.getState(),
+    employees: EmployeeStore.getState(),
   };
 }
 
