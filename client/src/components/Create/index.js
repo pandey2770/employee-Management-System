@@ -2,40 +2,60 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router'
 import { createEmployee } from '../../actions';
+import { uploadAvatar } from '../../utils';
 
 class CreateEmployee extends Component {
   state = {
-    name: '',
-    department: '',
-    phone:'',
-    address:'',
-    dob:'',
-    doj:''
+    employee: {
+      name: '',
+      department: '',
+      phone:'',
+      address:'',
+      dob:'',
+      doj:''
+    }
   };
 
   updateValue = event => {   
+    const { employee } = this.state;
     this.setState({
-      [`${event.target.name}`]: event.target.value
+      employee: { ...employee, [`${event.target.name}`]: event.target.value }
     });
   };
 
   createEmployee = () => {
-    const { name, department, phone, address , dob, doj } = this.state;
-    createEmployee(name, department, phone, address , dob, doj, this.props.history);
+    const { employee } = this.state;
+    createEmployee(employee, this.props.history);
   };
 
+  uploadAvatar = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      uploadAvatar(event.target.files[0], this.setAvatarInState);
+    }
+  };
+
+  setAvatarInState = (avatar) => {
+    const { employee } = this.state;
+    this.setState({
+      employee: { ...employee, avatar }
+    });
+  }
+
   render() {
-    const { name, department, phone, address , dob, doj } = this.state;
+    const { employee } = this.state;
+    console.log('employee', employee)
     return (
       <div>
-        <input placeholder="Name" name="name" value={name} onChange={this.updateValue} />
-        <input placeholder="department" name="department" value={department} onChange={this.updateValue} />
-        <input placeholder="phone" name="phone" value={phone} onChange={this.updateValue} />
-        <input placeholder="address" name="address" value={address} onChange={this.updateValue} />
-        <input type="date" placeholder="dob" name="dob" value={dob} onChange={this.updateValue} />
-        <input type="date" placeholder="doj" name="doj" value={doj} onChange={this.updateValue} />
-        <input type="button" value="Save" onClick={this.createEmployee} />
-        <Link to={`/`}><input type='button' value='Go To List Page' /></Link>
+        <div><input placeholder="Name" name="name" value={employee.name} onChange={this.updateValue} /></div>
+        <div><input placeholder="department" name="department" value={employee.department} onChange={this.updateValue} /></div>
+        <div><input placeholder="phone" name="phone" value={employee.phone} onChange={this.updateValue} /></div>
+        <div><input placeholder="address" name="address" value={employee.address} onChange={this.updateValue} /></div>
+        <div><input type="date" placeholder="dob" name="dob" value={employee.dob} onChange={this.updateValue} /></div>
+        <div><input type="date" placeholder="doj" name="doj" value={employee.doj} onChange={this.updateValue} /></div>
+        <img src={employee.avatar} height="100px" width="100px" />
+        <div><input type="file" onChange={this.uploadAvatar} /></div>
+        <div><input type="button" value="Save" onClick={this.createEmployee} /></div>
+        <div><Link to={`/`}><input type='button' value='Go To List Page' /></Link></div>
       </div>
     );
   }

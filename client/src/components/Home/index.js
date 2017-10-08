@@ -65,6 +65,7 @@ class Home extends Component {
         <table>
           <tbody>
             <tr>
+              <th />
               <th>Name<input name="name" type="button" onClick={this.sortEmployee} /></th>
               <th>Department<input name="department" type="button" onClick={this.sortEmployee} /></th>
               <th>phone<input name="phone" type="button" onClick={this.sortEmployee} /></th>
@@ -74,6 +75,7 @@ class Home extends Component {
               <th />
             </tr>
             <tr>
+              <th />
               <td><input name="name"  placeholder="Filter" onChange={this.filterEmployee} /></td>
               <td><input name="department" placeholder="Filter" onChange={this.filterEmployee} /></td>
               <td><input name="phone" placeholder="Filter" onChange={this.filterEmployee} /></td>
@@ -82,10 +84,11 @@ class Home extends Component {
               <td><input name="doj" placeholder="Filter" onChange={this.filterEmployee} /></td>
               <td />
             </tr>
-            {empData && empData.map(emp =>
+            {empData && empData.map((emp, index) =>
               <Employee
                 key={emp.id}
                 emp={emp}
+                index={index}
                 updateEmployee={this.props.updateEmployee}
                 deleteEmployee={this.props.deleteEmployee}
               />

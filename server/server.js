@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var Employee = require('./src/employee');
+var Image = require('./src/image');
 var app = express();
 
 require('./src/auth.js');
@@ -14,6 +15,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
 // app.use((err, req, res, next) => {
 //   console.error(err);
@@ -75,15 +77,25 @@ app.put('/api/employee/:id', isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/api/image/:id", isAuthenticated, async (req, res) => {
+  console.log('req.body', req.body)
+  const id = await Image.getImage(req.params.id);
+  console.log('******id', id)
+  // if (id) {
+  //   res.json({ id });
+  // } else {
+  //   res.status(500).send('Error while saving image !')
+  // }
+});
+
+app.post("/api/image", isAuthenticated, async (req, res) => {
+  console.log('******', req.body)
+  const id = await Image.saveImage(req.body.file);
+  if (id) {
+    res.json({ id });
+  } else {
+    res.status(500).send('Error while saving image !')
+  }
+});
+
 app.listen(6001, () => console.log("Server started on port 6001"));
-
-
-/**
- * √ 1. auth middleware
- * √ 2. logout
- * √ 3. seure all api
- * √ 4. api to get user details
- * 5. create username on frontend
- * 6. redirect user to login page on FE if not loggedin
- * 7. Move employee get query
- */

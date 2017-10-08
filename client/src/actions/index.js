@@ -44,13 +44,13 @@ export const getEmployees = () => {
   });
 };
 
-export const createEmployee = (name, department, phone, address , dob, doj, history) => {
+export const createEmployee = (employee, history) => {
   axios
-    .post('/api/employee/', { employee: { name, department, phone, address , dob, doj } })
+    .post('/api/employee/', { employee })
     .then(({ data }) => {
       dispatcher.dispatch({
         type: 'CREATE_EMPLOYEE',
-        data: { name, department, phone, address , dob, doj, id: data.id }
+        data: { ...employee, id: data.id }
       });
       history.push(`/employee/${data.id}`)
     }, () => {

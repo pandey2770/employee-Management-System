@@ -36,7 +36,7 @@ class App extends Component {
     ];
   }
   
-  static calculateState() {
+  static calculateState(prevState, props) {
     return {
       user: UserStore.getState()
     };
@@ -45,13 +45,15 @@ class App extends Component {
   render() {
     const { user } = this.state;
     return (
-      <div className="center-content">
-      {user && 
       <div>
-        <span>{user.username}</span>
-        <LogoutBtn />
-      </div>}
-      <h1>Employee Management System</h1>
+      <div  className="center-content">
+        {user && 
+        <div>
+          <span>{user.username}</span>
+          <LogoutBtn />
+        </div>}
+        <h1>Employee Management System</h1>
+      </div>
       {user ?
         <Switch>
           <Route path="/create" component={Create} />
@@ -64,4 +66,4 @@ class App extends Component {
   }
 }
 
-export default  Container.create(App, {withProps: true});
+export default Container.create(App, {withProps: true, pure: false});

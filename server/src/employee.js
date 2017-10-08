@@ -5,11 +5,11 @@ async function getAllemployee() {
   return await DB.get("SELECT * FROM employee");
 }
 
-async function createEmployee({ name, department, month, phone, address , dob, doj }) {
+async function createEmployee({ name, department, month, phone, address , dob, doj, avatar }) {
   const id = uuidv1();
   const query = {
-    text: "INSERT INTO employee(name, department, id, dob, doj, phone, address) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values:  [name, department, id, dob, doj, phone, address],
+    text: "INSERT INTO employee(name, department, id, dob, doj, phone, address, avatar) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+    values:  [name, department, id, dob, doj, phone, address, avatar],
   };
   await DB.mutate(query);
   return id;

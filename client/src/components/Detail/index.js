@@ -78,21 +78,26 @@ class EmployeeDetail extends Component {
           <input placeholder="address" name="address" value={emp && emp.address} onChange={this.updateValue} />
           <input type="date" placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} />
           <input type="date" placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} />
-          <input type="button" value="Save" onClick={this.updateEmployee} />
-          <input type="button" value="Cancel" onClick={this.toggleEditEmployee} />
         </div>
       );          
     }
     return (
       <div>
-        <div className="center-content">
+        <div>
           <h1>Details page</h1>
-          {emp && emp.name} --
-          {emp && emp.department} --
-          {emp && emp.phone} --
-          {emp && emp.address} --
-          {emp && formatDate(emp.dob)} --
-          {emp && formatDate(emp.doj)}
+          <div className='department'>{emp && emp.department} --</div>
+          <div className='flex'>
+            <div>
+              <img src={emp && emp.avatar} className='details_photo'/>
+            </div>
+            <div>
+              <div>{emp && emp.name} --</div>
+              <div>{emp && emp.phone} --</div>
+              <div>{emp && emp.address} --</div>
+              <div>{emp && formatDate(emp.dob)} --</div>
+              <div>{emp && formatDate(emp.doj)}</div>
+            </div>
+          </div>
         </div>
         <Link to={`/`}><input type='button' value='Go To List Page' /></Link>
         <input type='button' value='delete' onClick={this.deleteEmployee} />
