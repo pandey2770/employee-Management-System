@@ -1,12 +1,46 @@
 import axios from 'axios';
 import dispatcher from '../dispatcher';
 
+export const login = (username, password, history) => {
+  axios.post('/api/login', {username, password}).then(({ data }) => {
+    history.push('/');
+    getEmployees();
+    dispatcher.dispatch({
+      type: 'LOGIN_SUCCESS',
+      data
+    });
+  }, () => {
+    console.log('login failed 😣');
+  });
+}
+
+export const logout = ( history) => {
+  axios.get('/api/logout').then(() => {
+    history.push('/');
+    dispatcher.dispatch({
+      type: 'LOGOUT_SUCCESS',
+    });
+  });
+}
+
+export const getUser = () => {
+  axios.get('/api/user').then(({ data }) => {
+    getEmployees();
+    dispatcher.dispatch({
+      type: 'SET_USER',
+      data
+    });
+  });
+}
+
 export const getEmployees = () => {
   axios.get('/api/employee').then(({ data }) => {
     dispatcher.dispatch({
       type: 'GET_ALL_EMPLOYEE',
       data
     });
+  }, () => {
+    console.log('get employee failed 😣');
   });
 };
 

@@ -4,7 +4,7 @@ import { formatDate } from '../../utils';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { deleteEmployee, updateEmployee } from '../../actions';
-import AppStore from '../../store';
+import EmployeeStore from '../../store/employee';
 import './styles.css';
 
 class EmployeeDetail extends Component {
@@ -76,8 +76,8 @@ class EmployeeDetail extends Component {
           <input placeholder="department" name="department" value={emp && emp.department} onChange={this.updateValue} />
           <input placeholder="phone" name="phone" value={emp && emp.phone} onChange={this.updateValue} />
           <input placeholder="address" name="address" value={emp && emp.address} onChange={this.updateValue} />
-          <input placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} />
-          <input placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} />
+          <input type="date" placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} />
+          <input type="date" placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} />
           <input type="button" value="Save" onClick={this.updateEmployee} />
           <input type="button" value="Cancel" onClick={this.toggleEditEmployee} />
         </div>
@@ -104,13 +104,13 @@ class EmployeeDetail extends Component {
 
 function getStores() {
   return [
-    AppStore
+    EmployeeStore
   ];
 }
 
 function getState() {
   return {
-    employees: AppStore.getState(),
+    employees: EmployeeStore.getState(),
   };
 }
 

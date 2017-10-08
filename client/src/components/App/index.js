@@ -1,27 +1,67 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { getEmployees } from '../../actions';
+import { withRouter } from 'react-router';
+import { Container } from 'flux/utils';
+import  UserStore from '../../store/user';
+import { getUser } from '../../actions';
 import Home from '../Home';
+import Login from '../Login';
+import {logout} from '../../actions';
 import Detail from '../Detail';
 import Create from '../Create';
 import './styles.css';
 
-class App extends Component {
-  componentWillMount() {
-    getEmployees();
+class Logout extends Component {
+
+  logout = () => {
+    const { history } = this.props;
+    logout(history);
   }
 
   render() {
-    return (
-      <div className="center-content">
-        <h1>Employee Management System</h1>
-        <Switch>
-          <Route path="/show" component={Create} />
-          <Route path="/employee/:id" component={Detail} />
-          <Route path="/" component={Home} />
-        </Switch>
-    </div>);
+    return <input type='button' value='logout' onClick={this.logout}/>;
   }
 }
 
-export default App;
+const LogoutBtn = withRouter(Logout);
+
+class App extends Component {
+  componentWillMount() {
+    getUser();
+  }
+
+  static getStores() {
+    return [
+      UserStore
+    ];
+  }
+  
+  static calculateState() {
+    return {
+      user: UserStore.getState()
+    };
+  }
+  
+  render() {
+    const { user } = this.state;
+    return (
+      <div className="center-content">
+      {user && 
+      <div>
+        <span>{user.username}</span>
+        <LogoutBtn />
+      </div>}
+      <h1>Employee Management System</h1>
+      {user ?
+        <Switch>
+          <Route path="/create" component={Create} />
+          <Route path="/employee/:id" component={Detail} />
+          <Route path="/" component={Home} />
+        </Switch>:
+        <Login />}
+    </div>
+    );
+  }
+}
+
+export default  Container.create(App, {withProps: true});

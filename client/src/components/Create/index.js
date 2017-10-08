@@ -32,11 +32,11 @@ class CreateEmployee extends Component {
         <input placeholder="department" name="department" value={department} onChange={this.updateValue} />
         <input placeholder="phone" name="phone" value={phone} onChange={this.updateValue} />
         <input placeholder="address" name="address" value={address} onChange={this.updateValue} />
-        <input placeholder="dob" name="dob" value={dob} onChange={this.updateValue} />
-        <input placeholder="doj" name="doj" value={doj} onChange={this.updateValue} />
+        <input type="date" placeholder="dob" name="dob" value={dob} onChange={this.updateValue} />
+        <input type="date" placeholder="doj" name="doj" value={doj} onChange={this.updateValue} />
         <input type="button" value="Save" onClick={this.createEmployee} />
         <Link to={`/`}><input type='button' value='Go To List Page' /></Link>
-        </div>
+      </div>
     );
   }
 }
