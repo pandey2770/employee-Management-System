@@ -84,7 +84,7 @@ class EmployeeDetail extends Component {
     return (
       <div>
         <div>
-          <h1>Details page</h1>
+          <h1>Preview page</h1>
           <div className='department'>{emp && emp.department} --</div>
           <div className='flex'>
             <div>
