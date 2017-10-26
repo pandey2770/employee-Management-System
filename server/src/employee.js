@@ -25,7 +25,7 @@ async function deleteEmployee(id) {
 
 async function updateEmployee(id, { name, department, month, phone, address , dob, doj}) {
   const query = {
-    text: "UPDATE employee SET name = $1, department = $2 , month =$3, phone=$4, address=&5, dob=$6, doj=$7  WHERE id = $8",
+    text: "UPDATE employee SET name = $1, department = $2 , month = $3, phone = $4, address = $5, dob = $6, doj = $7  WHERE id = $8",
     values: [name, department, month, phone, address , dob, doj, id],
   };
   return await DB.mutate(query);

@@ -5,6 +5,7 @@ export const formatDate = (date) => {
   return formattedDate;
 }
 
+
 // export const uploadAvatar = (file, callback) => {
 //   console.log('into uploadAvatar')
 //   const xhr = new XMLHttpRequest();
@@ -20,7 +21,6 @@ export const formatDate = (date) => {
 // }
 
 export const uploadAvatar = (file, callback) => {
-  console.log('into uploadAvatar')
   const xhr = new XMLHttpRequest();
   xhr.open('POST', 'https://api.imgur.com/3/image');
   xhr.setRequestHeader('Authorization', 'Client-ID 8d26ccd12712fca');

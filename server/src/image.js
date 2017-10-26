@@ -3,7 +3,6 @@ const DB = require("./db");
 
 async function saveImage(file) {
   const id = uuidv1();
-  console.log('*******', id, file)
   const query = {
     text: "insert into image_table values($1, $2)",
     values:  [id, file],

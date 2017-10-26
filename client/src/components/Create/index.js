@@ -43,7 +43,6 @@ class CreateEmployee extends Component {
 
   render() {
     const { employee } = this.state;
-    console.log('employee', employee)
     return (
       <div>
         <div><input placeholder="Name" name="name" value={employee.name} onChange={this.updateValue} /></div>

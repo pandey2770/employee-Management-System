@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'flux/utils';
 import { Link } from 'react-router-dom';
-
 import EmployeeStore from '../../store/employee';
 import Employee from './employee';
 import './styles.css';

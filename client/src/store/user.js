@@ -13,7 +13,6 @@ class UserStore extends ReduceStore {
   reduce(state, action) {
     switch (action.type) {
       case 'LOGIN_SUCCESS':
-      console.log('action.data', action.data)
         return action.data;
       case 'LOGOUT_SUCCESS':
         return null;

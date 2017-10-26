@@ -78,9 +78,7 @@ app.put('/api/employee/:id', isAuthenticated, async (req, res) => {
 });
 
 app.get("/api/image/:id", isAuthenticated, async (req, res) => {
-  console.log('req.body', req.body)
   const id = await Image.getImage(req.params.id);
-  console.log('******id', id)
   // if (id) {
   //   res.json({ id });
   // } else {
@@ -89,7 +87,6 @@ app.get("/api/image/:id", isAuthenticated, async (req, res) => {
 });
 
 app.post("/api/image", isAuthenticated, async (req, res) => {
-  console.log('******', req.body)
   const id = await Image.saveImage(req.body.file);
   if (id) {
     res.json({ id });

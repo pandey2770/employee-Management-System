@@ -41,3 +41,10 @@
   float: right;
   margin-right: 25px;
 }
+.listpage {
+  text-align: center;
+  margin-top: 25px;
+}
+.save-button {
+  margin-top: 60px;
+}
