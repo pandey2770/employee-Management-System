@@ -23,15 +23,10 @@ class EmployeeStore extends ReduceStore {
         state.splice(index, 1);
         return [...state];
       case 'UPDATE_EMPLOYEE':
-      console.log('@@@@')
         const employee = action.data;
-        console.log('@@@@')        
         index = state.findIndex(employee => employee.id === action.id);
-        console.log('@@@@')        
         state[index] = employee;
-        console.log('@@@@')        
         return [...state];
-        console.log('@@@@')        
       default:
         return state;
     }

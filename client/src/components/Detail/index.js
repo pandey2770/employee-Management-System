@@ -85,8 +85,8 @@ class EmployeeDetail extends Component {
               <div><input className='heading-sub' placeholder="department" name="department" value={emp && emp.department} onChange={this.updateValue} /></div>
               <div><input className='heading-sub' placeholder="phone" name="phone" value={emp && emp.phone} onChange={this.updateValue} /></div>
               <div><input className='heading-sub' placeholder="address" name="address" value={emp && emp.address} onChange={this.updateValue} /></div>
-              <div><input className='heading-sub' type='date' placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} /></div>
-              <div><input className='heading-sub' type='date' placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' type='date' placeholder="dob" name="dob" value={emp && (emp.dob)} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' type='date' placeholder="doj" name="doj" value={emp && (emp.doj)} onChange={this.updateValue} /></div>
               <div className='save-button'>
                 <input type="button" value="Save" onClick={this.updateEmployee} />
                 <input type="button" value="Cancel" onClick={this.toggleEditEmployee} />
