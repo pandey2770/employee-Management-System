@@ -72,36 +72,52 @@ class EmployeeDetail extends Component {
     if (editing) {
       return (
         <div>
-          <input placeholder="Name" name="name" value={emp && emp.name} onChange={this.updateValue} />
-          <input placeholder="department" name="department" value={emp && emp.department} onChange={this.updateValue} />
-          <input placeholder="phone" name="phone" value={emp && emp.phone} onChange={this.updateValue} />
-          <input placeholder="address" name="address" value={emp && emp.address} onChange={this.updateValue} />
-          <input type="date" placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} />
-          <input type="date" placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} />
+          <h1 className='heading'>Preview page</h1>
+          <input className='name-heading name-heading2' placeholder="Name" name="name" value={emp && emp.name} onChange={this.updateValue} />
+          <div className="line-wrapper">
+            <div className="line"></div>
+          </div>      
+          <div className='flex'>
+            <div>
+              <img src={emp && emp.avatar} className='details_photo'/>
+            </div>
+            <div className='department'>
+              <div><input className='heading-sub' placeholder="department" name="department" value={emp && emp.department} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' placeholder="phone" name="phone" value={emp && emp.phone} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' placeholder="address" name="address" value={emp && emp.address} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' type="date" placeholder="dob" name="dob" value={emp && formatDate(emp.dob)} onChange={this.updateValue} /></div>
+              <div><input className='heading-sub' type="date" placeholder="doj" name="doj" value={emp && formatDate(emp.doj)} onChange={this.updateValue} /></div>
+            </div>
+          </div>
         </div>
       );          
     }
     return (
       <div>
         <div>
-          <h1>Preview page</h1>
-          <div className='department'>{emp && emp.department} --</div>
+          <h1 className='heading'>Preview page</h1>
+          <div className='name-heading'>Name -- {emp && emp.name}</div>
+          <div className='delete-button'> 
+            <input type='button' value='delete' onClick={this.deleteEmployee} />
+            <input type="button" value="Edit" onClick={this.toggleEditEmployee} /> 
+          </div>
+          <div className="line-wrapper">
+            <div className="line"></div>
+          </div>      
           <div className='flex'>
             <div>
               <img src={emp && emp.avatar} className='details_photo'/>
             </div>
-            <div>
-              <div>{emp && emp.name} --</div>
-              <div>{emp && emp.phone} --</div>
-              <div>{emp && emp.address} --</div>
-              <div>{emp && formatDate(emp.dob)} --</div>
-              <div>{emp && formatDate(emp.doj)}</div>
+            <div className='department'>
+              <h3>Department -- {emp && emp.department}</h3>
+              <div className='heading-sub'>Phone no. -- {emp && emp.phone}</div>
+              <div className='heading-sub'>Address -- {emp && emp.address}</div>
+              <div className='heading-sub'>Date of Birth -- {emp && formatDate(emp.dob)}</div>
+              <div className='heading-sub'>Date of Join -- {emp && formatDate(emp.doj)}</div>
             </div>
           </div>
         </div>
         <Link to={`/`}><input type='button' value='Go To List Page' /></Link>
-        <input type='button' value='delete' onClick={this.deleteEmployee} />
-        <input type="button" value="Edit" onClick={this.toggleEditEmployee} />
       </div>  
     );
   }

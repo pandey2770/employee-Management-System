@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteEmployee, updateEmployee } from '../../actions';
 import { formatDate } from '../../utils';
 
 export default class Employee extends Component {
@@ -18,7 +17,6 @@ export default class Employee extends Component {
   }
   
   render() {
-    const { editing, name, department, phone, address , dob, doj } = this.state;
     const { index, emp } = this.props;
     return (
       <tr>

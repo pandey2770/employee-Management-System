@@ -1,13 +1,43 @@
-.department {
-  text-align: center;
-}
 .details_photo {
   background-color: bisque;
   height: 250px;
   width: 250px;
 }
+.heading{
+  text-align: center;
+}
 .flex {
   display: flex;
-  justify-content: space-around;
-  width: 50%;
+  margin-left: 25px;
+}
+.name-heading {
+  margin-left: 25px;
+  font-size: xx-large;
+  font-weight: 300;
+}
+.name-heading2 {
+  margin: 25px;
+}
+.line-wrapper {
+  width: 100%;
+  display: flex;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+.line {
+  background: black;
+  border: 1px solid black;
+  width: 75%;
+}
+.heading-sub {
+  font-size: larger;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.department {
+  margin-left: 150px;
+}
+.delete-button {
+  float: right;
+  margin-right: 25px;
 }
